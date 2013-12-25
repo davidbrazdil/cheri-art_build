@@ -376,4 +376,9 @@
  */
 #define _WITH_DPRINTF
 
+/*
+ * Definition of CLOCK_BOOTTIME that is Linux-specific
+ */
+#define CLOCK_BOOTTIME CLOCK_MONOTONIC 
+
 #endif /*_ANDROID_CONFIG_H*/
