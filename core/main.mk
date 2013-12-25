@@ -147,6 +147,9 @@ ifneq ($(EXPERIMENTAL_USE_JAVA7),)
 ifeq ($(HOST_OS), linux)
 requires_openjdk := true
 endif
+ifeq ($(HOST_OS), freebsd)
+requires_openjdk := true
+endif
 endif
 
 ifeq ($(requires_openjdk), true)
@@ -178,7 +181,7 @@ endif # if requires_openjdk
 # EXPERIMENTAL_USE_JAVA7 is set, 1.6 otherwise.
 ifneq ($(EXPERIMENTAL_USE_JAVA7),)
 required_version := "1.7.x"
-java_version := $(shell java -version 2>&1 | head -n 1 | grep '^java .*[ "]1\.7[\. "$$]')
+java_version := $(shell java -version 2>&1 | head -n 1 | grep '^java .*[ "]1\.7[\. "$$]\|^openjdk .*[ "]1\.7[\. "$$]')
 javac_version := $(shell javac -version 2>&1 | head -n 1 | grep '[ "]1\.7[\. "$$]')
 else # if EXPERIMENTAL_USE_JAVA7
 required_version := "1.6.x"
