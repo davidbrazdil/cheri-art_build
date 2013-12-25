@@ -51,6 +51,9 @@ endif
 ifneq (,$(findstring CYGWIN,$(UNAME)))
 	HOST_OS := windows
 endif
+ifneq (,$(findstring FreeBSD,$(UNAME)))
+	HOST_OS := freebsd
+endif
 
 # BUILD_OS is the real host doing the build.
 BUILD_OS := $(HOST_OS)
@@ -70,6 +73,9 @@ endif
 
 # HOST_ARCH
 ifneq (,$(findstring 86,$(UNAME)))
+	HOST_ARCH := x86
+endif
+ifneq (,$(findstring amd64,$(UNAME)))
 	HOST_ARCH := x86
 endif
 
