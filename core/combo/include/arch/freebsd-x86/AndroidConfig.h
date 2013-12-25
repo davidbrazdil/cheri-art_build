@@ -366,4 +366,9 @@
  */
 #define HAVE_GNU_QSORT_R 0
 
+/*
+ * Definition of ENODATA const that is not present in FreeBSD's <sys/types.h>
+ */
+#define ENODATA ENOTSUP
+
 #endif /*_ANDROID_CONFIG_H*/
