@@ -371,4 +371,9 @@
  */
 #define ENODATA ENOTSUP
 
+/*
+ * Required to define dprintf() by <stdio.h> on FreeBSD
+ */
+#define _WITH_DPRINTF
+
 #endif /*_ANDROID_CONFIG_H*/
