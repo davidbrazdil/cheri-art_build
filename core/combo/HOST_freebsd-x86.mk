@@ -63,3 +63,27 @@ HOST_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 # Taken from Mac host
 HOST_GLOBAL_ARFLAGS := cqs
 
+# Definition taken from core/definitions.mk
+HOST_CUSTOM_LD_COMMAND := true
+define transform-host-o-to-executable-inner
+$(hide) $(PRIVATE_CXX) \
+	$(PRIVATE_ALL_OBJECTS) \
+	-Wl,--whole-archive \
+	$(call normalize-host-libraries,$(PRIVATE_ALL_WHOLE_STATIC_LIBRARIES)) \
+	-Wl,--no-whole-archive \
+	$(if $(PRIVATE_GROUP_STATIC_LIBRARIES),-Wl$(comma)--start-group) \
+	$(call normalize-host-libraries,$(PRIVATE_ALL_STATIC_LIBRARIES)) \
+	$(if $(PRIVATE_GROUP_STATIC_LIBRARIES),-Wl$(comma)--end-group) \
+	$(call normalize-host-libraries,$(PRIVATE_ALL_SHARED_LIBRARIES)) \
+	-Wl,-rpath-link=$(HOST_OUT_INTERMEDIATE_LIBRARIES) \
+	-Wl,-rpath,\$$ORIGIN/../lib \
+	$(HOST_GLOBAL_LD_DIRS) \
+	$(PRIVATE_LDFLAGS) \
+	$(if $(PRIVATE_NO_DEFAULT_COMPILER_FLAGS),, \
+		$(HOST_GLOBAL_LDFLAGS) \
+		-fPIE -pie \
+	) \
+	-o $@ \
+	$(filter-out -ldl,$(PRIVATE_LDLIBS))
+endef
+
