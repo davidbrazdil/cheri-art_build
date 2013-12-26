@@ -437,6 +437,7 @@ add_lunch_combo aosp_x86-eng
 add_lunch_combo aosp_mips-eng
 add_lunch_combo aosp_x86_64-eng
 add_lunch_combo vbox_x86-eng
+add_lunch_combo cheri_mips-eng
 
 function print_lunch_menu()
 {

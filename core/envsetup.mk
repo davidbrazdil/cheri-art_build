@@ -129,10 +129,13 @@ endif
 # ---------------------------------------------------------------
 # Set up configuration for target machine.
 # The following must be set:
-# 		TARGET_OS = { linux }
+# 		TARGET_OS = { linux, freebsd }
 # 		TARGET_ARCH = { arm | x86 | mips }
 
+# set default target OS to Linux
+ifeq (,$(TARGET_OS))
 TARGET_OS := linux
+endif
 # TARGET_ARCH should be set by BoardConfig.mk and will be checked later
 
 # the target build type defaults to release
