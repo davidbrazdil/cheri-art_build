@@ -43,7 +43,7 @@ HOST_GLOBAL_CFLAGS += -m64 -Wa,--noexecstack
 HOST_GLOBAL_LDFLAGS += -m64 -Wl,-z,noexecstack
 else
 # We expect SSE3 floating point math.
-HOST_GLOBAL_CFLAGS += -mstackrealign -msse3 -mfpmath=sse -m32 -Wa,--noexecstack
+HOST_GLOBAL_CFLAGS += -mstackrealign -msse3 -m32 -Wa,--noexecstack
 HOST_GLOBAL_LDFLAGS += -m32 -Wl,-z,noexecstack
 endif # BUILD_HOST_64bit
 
