@@ -80,7 +80,9 @@ ifeq ($(FORCE_MIPS_DEBUGGING),true)
   TARGET_mips_CFLAGS += -fno-omit-frame-pointer
 endif
 
-android_config_h := $(call select-android-config-h,linux-mips)
+ifeq ($(android_config_h),)
+  android_config_h := $(call select-android-config-h,linux-mips)
+endif
 
 TARGET_GLOBAL_CFLAGS += \
 			$(TARGET_mips_CFLAGS) \

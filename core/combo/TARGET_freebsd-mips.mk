@@ -20,6 +20,6 @@
 TARGET_TOOLCHAIN_ROOT := prebuilts/gcc/$(HOST_PREBUILT_TAG)/mips64/mips64-unknown-freebsd
 TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/mips64-unknown-freebsd-
 
-include $(BUILD_COMBOS)/$(combo_target)linux-mips.mk
-
 android_config_h := $(call select-android-config-h,freebsd-mips)
+
+include $(BUILD_COMBOS)/$(combo_target)linux-mips.mk
