@@ -23,3 +23,5 @@ TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/mips64-unknown-freebsd-
 android_config_h := $(call select-android-config-h,freebsd-mips)
 
 include $(BUILD_COMBOS)/$(combo_target)linux-mips.mk
+
+TARGET_DEFAULT_SYSTEM_SHARED_LIBRARIES := 

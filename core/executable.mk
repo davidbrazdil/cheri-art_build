@@ -28,10 +28,13 @@ ifndef skip_build_from_source
 ####################################################
 ifeq ($(strip $(LOCAL_ENABLE_APROF)),true)
   ifeq ($(LOCAL_FORCE_STATIC_EXECUTABLE), true)
-    LOCAL_STATIC_LIBRARIES += libaprof libaprof_static libc libcutils
+    LOCAL_STATIC_LIBRARIES += libaprof libaprof_static libcutils
   else
-    LOCAL_SHARED_LIBRARIES += libaprof libaprof_runtime libc
+    LOCAL_SHARED_LIBRARIES += libaprof libaprof_runtime
   endif
+  ifneq ($(TARGET_ARCH_VARIANT),cheri)
+    LOCAL_STATIC_LIBRARIES += libc
+  endif # TARGET_ARCH_VARIANT != cheri
   LOCAL_WHOLE_STATIC_LIBRARIES += libaprof_aux
 endif
 
