@@ -148,7 +148,7 @@
  * Define this if we have pthread_cond_timedwait_monotonic() and
  * clock_gettime(CLOCK_MONOTONIC).
  */
-#define HAVE_TIMEDWAIT_MONOTONIC
+/* #define HAVE_TIMEDWAIT_MONOTONIC */
 
 /*
  * Define this if we have linux style epoll()
