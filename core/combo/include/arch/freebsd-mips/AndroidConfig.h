@@ -225,6 +225,10 @@
 #undef __unix
 #endif
 
+#ifndef __CHERI__
+#define __CHERI__ 1
+#endif
+
 /*
  * Define if we have <malloc.h> header
  */
