@@ -18,10 +18,15 @@
 # Included by combo/select.mk
 
 TARGET_TOOLCHAIN_ROOT := prebuilts/gcc/$(HOST_PREBUILT_TAG)/mips64/mips64-unknown-freebsd
-TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/mips64-unknown-freebsd-
+TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/mips4-unknown-freebsd-
 
 android_config_h := $(call select-android-config-h,freebsd-mips)
+
+TARGET_mips_CFLAGS += -integrated-as
+TARGET_GLOBAL_CPPFLAGS += -integrated-as
 
 include $(BUILD_COMBOS)/$(combo_target)linux-mips.mk
 
 TARGET_DEFAULT_SYSTEM_SHARED_LIBRARIES := 
+
+
