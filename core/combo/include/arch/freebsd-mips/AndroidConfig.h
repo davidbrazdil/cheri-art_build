@@ -175,13 +175,13 @@
  * agree on the same size.  For desktop systems, use 64-bit values,
  * because some of our libraries (e.g. wxWidgets) expect to be built that way.
  */
-/* #define _FILE_OFFSET_BITS 64 */
-/* #define _LARGEFILE_SOURCE 1 */
+#define _FILE_OFFSET_BITS 64
+#define _LARGEFILE_SOURCE 1
 
 /*
  * Define if platform has off64_t (and lseek64 and other xxx64 functions)
  */
-#define HAVE_OFF64_T
+/* #define HAVE_OFF64_T */
 
 /*
  * Defined if we have the backtrace() call for retrieving a stack trace.
