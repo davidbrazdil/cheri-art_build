@@ -338,7 +338,7 @@
 /*
  * Define if prctl() exists
  */
-#define HAVE_PRCTL 1
+/* #define HAVE_PRCTL 1 */
 
 /*
  * Define if writev() exists
