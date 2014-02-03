@@ -47,7 +47,7 @@
  * (HAVE_PTHREAD_SETNAME_NP is used by WebKit to enable a function with
  * the same name but different parameters, so we can't use that here.)
  */
-#define HAVE_ANDROID_PTHREAD_SETNAME_NP
+/* #define HAVE_ANDROID_PTHREAD_SETNAME_NP */
 
 /*
  * Do we have the futex syscall?
