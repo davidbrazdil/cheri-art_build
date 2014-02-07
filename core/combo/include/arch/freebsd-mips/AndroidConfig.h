@@ -380,4 +380,9 @@
  */
 #define HAVE_UNWIND_CONTEXT_STRUCT 1
 
+/*
+ * Definition of ENODATA const that is not present in FreeBSD's <sys/types.h>
+ */
+#define ENODATA ENOTSUP
+
 #endif /* _ANDROID_CONFIG_H */
