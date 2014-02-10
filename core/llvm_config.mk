@@ -1,5 +1,10 @@
+ifeq ($(TARGET_ARCH_VARIANT),cheri)
+CLANG := $(TARGET_TOOLS_PREFIX)clang
+CLANG_CXX := $(TARGET_TOOLS_PREFIX)clang++
+else
 CLANG := $(HOST_OUT_EXECUTABLES)/clang$(HOST_EXECUTABLE_SUFFIX)
 CLANG_CXX := $(HOST_OUT_EXECUTABLES)/clang++$(HOST_EXECUTABLE_SUFFIX)
+endif # TARGET_ARCH_VARIANT != cheri
 LLVM_AS := $(HOST_OUT_EXECUTABLES)/llvm-as$(HOST_EXECUTABLE_SUFFIX)
 LLVM_LINK := $(HOST_OUT_EXECUTABLES)/llvm-link$(HOST_EXECUTABLE_SUFFIX)
 
@@ -42,30 +47,52 @@ ifeq ($(TARGET_ARCH),arm)
     -Wa,--noexecstack
 endif
 ifeq ($(TARGET_ARCH),mips)
-  RS_TRIPLE := mipsel-unknown-linux
-  CLANG_CONFIG_EXTRA_ASFLAGS += \
-    -target mipsel-linux-androideabi \
-    -nostdlibinc \
-    -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
-  CLANG_CONFIG_EXTRA_CFLAGS += $(CLANG_CONFIG_EXTRA_ASFLAGS)
-  CLANG_CONFIG_EXTRA_LDFLAGS += \
-    -target mipsel-linux-androideabi \
-    -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
-  CLANG_CONFIG_UNKNOWN_CFLAGS += \
-    -EL \
-    -mips32 \
-    -mips32r2 \
-    -mhard-float \
-    -fno-strict-volatile-bitfields \
-    -fgcse-after-reload \
-    -frerun-cse-after-loop \
-    -frename-registers \
-    -march=mips32r2 \
-    -mtune=mips32r2 \
-    -march=mips32 \
-    -mtune=mips32 \
-    -msynci \
-    -mno-fused-madd
+  ifeq ($(TARGET_ARCH_VARIANT),cheri)
+    RS_TRIPLE := $(CHERI_TARGET_TRIPLE)
+    CLANG_CONFIG_EXTRA_ASFLAGS += \
+      -target $(CHERI_TARGET_TRIPLE) \
+      -nostdlibinc \
+      -B$(TARGET_TOOLCHAIN_ROOT)/bin
+    CLANG_CONFIG_EXTRA_CFLAGS += \
+      $(CLANG_CONFIG_EXTRA_ASFLAGS) \
+      $(arch_variant_cflags)
+    CLANG_CONFIG_EXTRA_LDFLAGS += \
+      -target $(CHERI_TARGET_TRIPLE) \
+      -B$(TARGET_TOOLCHAIN_ROOT)/bin \
+      $(arch_variant_ldflags)
+    CLANG_CONFIG_UNKNOWN_CFLAGS += \
+      -fno-strict-volatile-bitfields \
+      -fgcse-after-reload \
+      -frerun-cse-after-loop \
+      -frename-registers \
+      -msynci \
+      -mno-fused-madd
+  else
+    RS_TRIPLE := mipsel-unknown-linux
+    CLANG_CONFIG_EXTRA_ASFLAGS += \
+      -target mipsel-linux-androideabi \
+      -nostdlibinc \
+      -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
+    CLANG_CONFIG_EXTRA_CFLAGS += $(CLANG_CONFIG_EXTRA_ASFLAGS)
+    CLANG_CONFIG_EXTRA_LDFLAGS += \
+      -target mipsel-linux-androideabi \
+      -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
+    CLANG_CONFIG_UNKNOWN_CFLAGS += \
+      -EL \
+      -mips32 \
+      -mips32r2 \
+      -mhard-float \
+      -fno-strict-volatile-bitfields \
+      -fgcse-after-reload \
+      -frerun-cse-after-loop \
+      -frename-registers \
+      -march=mips32r2 \
+      -mtune=mips32r2 \
+      -march=mips32 \
+      -mtune=mips32 \
+      -msynci \
+      -mno-fused-madd
+  endif
 endif
 ifeq ($(TARGET_ARCH),x86)
   RS_TRIPLE := i686-unknown-linux
@@ -101,8 +128,11 @@ ifeq ($(TARGET_ARCH),x86_64)
     -mbionic
 endif
 
-
+ifeq ($(TARGET_ARCH_VARIANT),cheri)
+CLANG_CONFIG_EXTRA_TARGET_C_INCLUDES := $(TARGET_TOOLCHAIN_ROOT)/usr/include $(TARGET_OUT_HEADERS)/clang
+else
 CLANG_CONFIG_EXTRA_TARGET_C_INCLUDES := external/clang/lib/include $(TARGET_OUT_HEADERS)/clang
+endif
 
 # remove unknown flags to define CLANG_FLAGS
 TARGET_GLOBAL_CLANG_FLAGS += $(filter-out $(CLANG_CONFIG_UNKNOWN_CFLAGS),$(TARGET_GLOBAL_CFLAGS))
