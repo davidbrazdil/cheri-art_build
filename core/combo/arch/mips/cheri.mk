@@ -3,9 +3,6 @@
 
 arch_variant_cflags := \
     -EB \
-    -march=mips64 \
-    -mtune=mips \
-    -mips64 \
     -msoft-float
 
 arch_variant_ldflags := \
