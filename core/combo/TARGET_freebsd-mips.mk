@@ -25,8 +25,37 @@ android_config_h := $(call select-android-config-h,freebsd-mips)
 
 TARGET_mips_CFLAGS += -integrated-as
 TARGET_GLOBAL_CPPFLAGS += -integrated-as
+TARGET_GLOBAL_LDFLAGS += -Xlinker -melf64btsmip_fbsd -Xlinker -v
 
 include $(BUILD_COMBOS)/$(combo_target)linux-mips.mk
 
 TARGET_DEFAULT_SYSTEM_SHARED_LIBRARIES := 
+
+TARGET_CRTBEGIN_SO_O :=
+TARGET_CRTEND_SO_O := 
+LOCAL_NO_CRT := true
+
+define transform-o-to-shared-lib-inner
+ $(hide) $(PRIVATE_CXX) \
+     -Wl,-soname,$(notdir $@) \
+     -Wl,--gc-sections \
+     -Wl,-shared,-Bsymbolic \
+     $(PRIVATE_TARGET_GLOBAL_LD_DIRS) \
+     $(if $(filter true,$(PRIVATE_NO_CRT)),,$(PRIVATE_TARGET_CRTBEGIN_SO_O)) \
+     $(PRIVATE_ALL_OBJECTS) \
+     -Wl,--whole-archive \
+     $(call normalize-target-libraries,$(PRIVATE_ALL_WHOLE_STATIC_LIBRARIES)) \
+     -Wl,--no-whole-archive \
+     $(if $(PRIVATE_GROUP_STATIC_LIBRARIES),-Wl$(comma)--start-group) \
+     $(call normalize-target-libraries,$(PRIVATE_ALL_STATIC_LIBRARIES)) \
+     $(if $(PRIVATE_GROUP_STATIC_LIBRARIES),-Wl$(comma)--end-group) \
+     $(PRIVATE_TARGET_LIBGCC) \
+     $(PRIVATE_TARGET_FDO_LIB) \
+     $(call normalize-target-libraries,$(PRIVATE_ALL_SHARED_LIBRARIES)) \
+     -o $@ \
+     $(PRIVATE_TARGET_GLOBAL_LDFLAGS) \
+     $(PRIVATE_LDFLAGS) \
+     $(PRIVATE_TARGET_LIBGCC) \
+     $(if $(filter true,$(PRIVATE_NO_CRT)),,$(PRIVATE_TARGET_CRTEND_SO_O))
+ endef
 
