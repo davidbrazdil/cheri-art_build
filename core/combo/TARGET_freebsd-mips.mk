@@ -39,7 +39,7 @@ define transform-o-to-shared-lib-inner
  $(hide) $(PRIVATE_CXX) \
      -Wl,-soname,$(notdir $@) \
      -Wl,--gc-sections \
-     -Wl,-shared,-Bsymbolic \
+     -shared \
      $(PRIVATE_TARGET_GLOBAL_LD_DIRS) \
      $(if $(filter true,$(PRIVATE_NO_CRT)),,$(PRIVATE_TARGET_CRTBEGIN_SO_O)) \
      $(PRIVATE_ALL_OBJECTS) \
